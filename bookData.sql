@@ -27,3 +27,20 @@ VALUES
 ('Cannery Row', 'John', 'Steinbeck', 1945, 95, 181),
 ('Oblivion: Stories', 'David', 'Foster Wallace', 2004, 172, 329),
 ('Consider the Lobster', 'David', 'Foster Wallace', 2005, 92, 343);
+
+
+SELECT CONCAT(SUBSTRING(title, 1, 10), "...") AS "short title", 
+       CONCAT(author_lname, ", ", author_fname) AS "author", 
+       CONCAT(stock_quantity, " in stock") AS "quantity"
+FROM books;
+
+
+1. SELECT title AS Title FROM books WHERE title LIKE "%Stories%";                                          <--- Select the book where the title has "Stories" in it.
+2. SELECT title as Title, pages AS Pages FROM books ORDER BY pages DESC LIMIT 1;                           <--- Select the book with the most pages.
+3. SELECT CONCAT(title, " - ", released_year) AS summary FROM books ORDER BY released_year DESC LIMIT 3;   <--- Select the top 3 most recent books.
+4. SELECT title as Title, author_lname AS "Last Name" FROM books WHERE author_lname LIKE "% %";            <--- Select all books where the author has a space in their last name.
+5. SELECT title AS Title, released_year as "Year of Release", stock_quantity as "Stock" 
+   FROM books ORDER BY stock_quantity ASC LIMIT 3;                                                         <--- Select the 3 books with the lowest stock.
+6. SELECT title as Title, author_lname as "Author Last Name" FROM books ORDER BY author_lname, title;      <--- Select title and last name and sort it by author_lname and then title.
+7. SELECT DISTINCT CONCAT("MY FAVORITE AUTHOR IS ", UPPER(author_fname), " ", UPPER(author_lname)) as "yell" FROM books  
+   ORDER BY author_lname ASC;                                                                              <--- Print "MY FAVORITE AUTHOR IS " and then the distinct author names.

@@ -168,13 +168,68 @@ BASIC COMMANDS:
             LOWER() works the same way as above.
             
             
-26. 
-            
-            
-            
-            
-            
+26. DISTINCT <-- Find all uniques.
 
+            SELECT DISTINCT column FROM table_name;
+            
+            
+27. ORDER BY <--- sorting results
 
+            SELECT * FROM table_name ORDER BY column DESC/ASC <-- order by a column in ascending or descending order. Ascending is default.
+            SELECT column1, column2, column3 FROM table_name ORDER BY 2 <-- Order by the 2nd column.
+            SELECT column1, column2 FROM table_name ORDER BY column1, column2; <-- Sort by 2 different columns.
+            
+            
+28. LIMIT <argument> <--- Limit by whatever; comes last in the query.
+
+            SELECT column FROM books LIMIT 3; <--- show only first 3 results.
+            SELECT column FROM books LIMIT 2, 5; <--- Range
+            
+            
+29. LIKE <--- WHERE is useful in finding exact matches. But what if we wanted to find all Harry Potter books, for example?
+              Then we would use LIKE.
+              
+              For  example, say we are looking for a book, but don't remember the title. We know the first name is "Alex."
+              We can attempt to find the book with the following query:
+              
+              SELECT * FROM books WHERE author_fname LIKE "%Raymond%"; <--- Find every book written by someone with "Raymond" in their first name.
+              SELECT * FROM books WHERE author_fname LIKE "Ray%"; <--- Find every book written by someone whose name starts with "Ray" in their first name.
+              SELECT * FROM books WHERE author_fname LIKE "%mond"; <--- Find every book written by someone whose name ends with "mond" in their first name.
+              SELECT * FROM books WHERE author_fname LIKE "____"; <--- 4 underscores. Each underscore specifies ONE character. So we are looking for a name that is 4 characters long.
+              SELECT * FROM books WHERE author_fname LIKE "%"; <--- Gives us everything.
+              
+              How would we select something that explicitly has a % sign or underscore in it?
+              
+              SELECT * FROM books WHERE author_fname LIKE "%\%%"; <--- use escape character.
+              SELECT * FROM books WHERE author_fname LIKE "%\_%";
                                                  
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
