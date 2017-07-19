@@ -399,4 +399,57 @@ Specifier	Description
             
 49. OR / ||
 
+            SELECT title, pages FROM books WHERE pages > 200 || title LIKE "%the%" ORDER BY pages;   <--- Find all books where pages are either greater than 200 OR less than 500.
+
             
+50 BETWEEN:
+
+            SELECT title, released_year FROM books WHERE released_year >= 2010 && released_year <= 2017;
+            
+            OR
+            
+            SELECT title, released_year FROM books WHERE released_year BETWEEN 2010 AND 2017;
+            
+                NOT BETWEEN
+                
+                SELECT title, released_year FROM books WHERE released_year NOT BETWEEN 2010 AND 2017;
+                
+            
+            HOW TO SELECT BETWEEN DATES:
+            
+                SELECT name, birthdt FROM people WHERE birthdt BETWEEN CAST("1980-01-01" AS DATETIME) AND CAST("2000-01-01" AS DATETIME);
+                
+                
+51. IN and NOT IN
+
+            Select all books written by Carver or Lahiri or Smith.
+            
+                SELECT title, author_lname FROM books WHERE author_lname IN ("Carver", "Lahiri", "Smith");
+                
+            Select all books NOT written by Carver or Lahiri or Smith.  
+            
+                SELECT title, author_lname FROM books WHERE author_lname NOT IN ("Carver", "Lahiri", "Smith");
+                
+            Select all books past 2000 NOT published in 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016
+            
+                SELECT title, released_year FROM books WHERE released_year >= 2000 && released_year NOT IN (2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016) ORDER BY released_year;
+                
+                
+52. MODULO or %
+
+            Select all books NOT published in EVEN years and past 2000.
+                
+                SELECT title, released_year FROM books WHERE released_year > 2000 && released_year % 2 != 0;
+                
+                
+53. CASE statements like if statements in programming languages.
+    
+            SELECT title, released_year,
+                CASE
+                    WHEN released_year >= 2000 THEN "Modern Lit"
+                    ELSE "20th Century Lit"
+                END AS "GENRE"
+            FROM books;
+
+
+54.

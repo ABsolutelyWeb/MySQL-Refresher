@@ -110,3 +110,51 @@ FROM books;
     
     
     
+22. -- Evaluate the following:
+
+    SELECT 10 != 10;                            <--- 0
+    SELECT 15 > 14 && 99 - 5 <= 94;             <--- 1
+    SELECT 1 IN (5,3) || 9 BETWEEN 8 AND 10;    <--- 1
+    
+23. -- Select all books written before 1980 non-inclusive
+    SELECT title, released_year FROM books WHERE released_year < 1980;
+    
+24. -- Select all books by Eggers or Chabon
+    SELECT title, author_lname FROM books WHERE author_lname = "Eggers" || author_lname = "Chabon";
+    -- OR
+    SELECT title, author_lname FROM books WHERE author_lname IN ("Eggers", "Chabon");
+    
+    
+25. -- Select all books written by Lahiri before 2000
+    SELECT title, released_year, author_lname FROM books WHERE author_lname = "Lahiri" && released_year > 2000;
+    
+26. -- Select all books with page counts between 100 and 200.
+    SELECT title, pages FROM books WHERE pages BETWEEN 100 AND 200;
+    SELECT title, pages FROM books WHERE pages > 100 && pages < 200;
+    
+27. -- Select all books where author_lname starts with a "C" or an "S"
+    SELECT title, author_lname FROM books WHERE author_lname LIKE "C%" || author_lname LIKE "S%"; 
+    -- OR
+    SELECT title, author_lname FROM books WHERE SUBSTRING(author_lname,1,1) = "C" || SUBSTRING(author_lname,1,1) = "S";
+    -- OR
+    SELECT title, author_lname FROM books WHERE SUBSTRING(author_lname,1,1) IN ("C", "S");
+    
+28. -- If title has "stories" -> Short Stories; Just Kids and a Heartbreaking Work --> Memoir, Everything else --> Novel
+    SELECT title, author_lname,
+        CASE
+            WHEN title LIKE "%stories%" THEN "Short Stories"
+            WHEN title LIKE "%Just Kids%" || title LIKE "%A Heartbreaking Work%" THEN "Memoir"
+            ELSE "Novel"
+        END AS "TYPE"
+    FROM books;
+    
+29. -- Select all authors and how many books they've written. If they only wrote won, say "1 book" and it they wrote more than one, then book should be plural. 
+    SELECT title AS "One Piece of Work", author_lname AS "Author", 
+        CASE
+            WHEN COUNT(*) = 1 THEN "1 book"
+            WHEN COUNT(*) = 0 THEN "None"
+            ELSE CONCAT(COUNT(*), " books")
+        END AS "Total Books"
+    FROM books GROUP BY author_lname, author_fname;
+    
+    
