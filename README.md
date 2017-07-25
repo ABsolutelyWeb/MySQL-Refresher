@@ -452,4 +452,157 @@ Specifier	Description
             FROM books;
 
 
-54.
+==================================================== RELATIONSHIPS AND JOINS ==================================================== 
+
+54. TYPES OF RELATIONSHIPS:
+            
+            1. One to one relationship.
+                - Aren't very common or useful.
+                - Say we have a customers table. Each entry (or customer) will have a name, email, password, and registration date.
+                  Now let's say we have a separate table that stores even more information about a customer. Basically, we are storing
+                  more info about a customer in another table. For example, Abhishek can have a customerdetails row where each row is 
+                  associated with one customer. No other customer can be associated with it since it is a one to one relationship.
+
+            2. One to many relationship.
+                - Far more common. 
+                - Look at the relationship of books and reviews. One book can have many reviews, but a particular review can only belong 
+                  to one book exclusively. This is a one to many relationship.
+                
+            3. Many to many relationship.
+                - Relatively common.
+                - Example: Books can have many authors and many authors can have many books.
+                
+                
+55. 1:MANY or one to many relationship
+
+        Customers and orders. A customer can have as many orders as they want, but each order is only for one customer. Customers have many
+                              orders, an order has one customer. We want a customer's details as well as order details. How to store this?
+                              We COULD have all names and orders in one table, but that would get messy due to multiple orders by the same
+                              person. It would also be difficult to sort through. Much better to keep data separated. What do we do then?
+                              
+            Customers                                 Orders
+            - id             <--- FOREIGN KEY <---    - customer_id
+            - first_name                              - order_id
+            - last_name                               - order_date
+            - email                                   - amount
+        
+
+56. FOREIGN KEY: Reference to another table from a table. So in the above example, customer_id from the orders table is a reference to
+                 customer_id from the customers table.
+                       
+        CREATE TABLE customers(
+            id INT AUTO_INCREMENT PRIMARY KEY, 
+            first_name VARCHAR(100), 
+            last_name VARCHAR(100), 
+            email VARCHAR(100)
+        );
+        
+        CREATE TABLE orders(
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            order_date DATE,
+            amount DECIMAL(8,2),
+            customer_id INT,
+            FOREIGN KEY(customer_id) REFERENCES customers(id)
+        );
+        
+        
+57. Cross Join
+
+            -- Find all orders by "Boy George"
+            SELECT * FROM orders WHERE customer_id = (SELECT id FROM customers WHERE last_name="George" && first_name="Boy");
+            
+            -- Basic Join / IMPLICIT Cross Join
+            SELECT * FROM customers, orders;
+                        - Basically takes every customer and matches it with every order. Almost like multiplication.
+                        
+            -- EXPLICIT Cross Join
+            SELECT * FROM customers JOIN orders;
+                        
+                        
+58. Inner Join AKA joining data where it matches. Picture a Venn diagram with two circles. We take the data from the intersection.
+            
+            -- Take the cross joins result and make it print relevant data where customer id matches the appropriate order(s).
+            -- IMPLICIT INNER JOIN
+            SELECT * FROM customers, orders WHERE customers.id = orders.customer_id;
+            
+            -- EXPLICIT INNER JOIN
+            SELECT * FROM customers JOIN orders ON customers.id = orders.customer_id;
+            
+            
+59. Left Join
+
+            -- Imagine a typical venn diagram with two intersecting circles. Say circle A is on left and cicle B is on the right and
+               they both intersect. Lets call that intersection C. Left join means that we want everything from circle A that includes
+               the intersection C data. So it takes the union of A and B, but also takes everything from A.
+            -- Useful for finding null values.
+            SELECT * FROM customers LEFT JOIN orders ON customers.id = orders.customer_id;  
+            -- SEE joinsData.sql for more examples!
+            
+            
+60. Right Join
+
+            -- Same as left join except for right. So it takes the union of A and B, but also takes everything from B.
+            SELECT * FROM customers RIGHT JOIN orders ON customers.id = orders.customer_id;
+            
+            -- We wont see any difference because every order has a customer. To fix this, let us delete a user:
+            DELETE * FROM customer WHERE first_name="Boy";
+                -- This will NOT work because of foreign key constraints because every order has to have a reference to an actual user.
+                -- We need to delete the user and all orders associated with that user. See subsequen bullet points on how to do this.
+                
+                
+61. ON DELETE CASCADE <-- In a foreign key relationship, if parent is deleted, we want the child (the table that is dependent) deleted as well.   
+
+        CREATE TABLE orders(
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            order_date DATE,
+            amount DECIMAL(8,2),
+            customer_id INT,
+            FOREIGN KEY(customer_id) REFERENCES customers(id)
+            ON DELETE CASCADE                   <-- When a customer is deleted and that customer has order(s), delete orders as well.
+        );
+        
+        
+62. Many to Many examples
+    
+            Books <-> Authors     A book can have many author and an author can have many books.
+            Blog post <-> Tags    A blog post can be associated with many tags and a tag can be associated with many blog posts.
+            Students <-> Classes  A student can be enrolled in many classes and a class can have many students. 
+            
+            One way to accomplish this is to have a 3 table that connects two. For example, 
+            
+            REVIEWERS       SERIES          REVIEWS
+            id              id              id
+            first_name      title           rating
+            last_name       released_year   series_id
+                            genre           reviewer_id
+                            
+            So the REVIEWS table has two foreign keys each linking to a table.
+
+
+63. ROUND function EXAMPLE
+    
+        SELECT 
+            genre, 
+            ROUND(
+                AVG(rating), 
+                2
+            ) AS "avg_rating"
+        FROM series JOIN reviews ON series.id = reviews.series_id
+        GROUP BY genre
+        ORDER BY genre ASC;
+
+
+64. Joining three tables:
+ 
+        SELECT title, 
+               rating, 
+               CONCAT(reviewers.first_name, " ", reviewers.last_name) AS "reviewer"
+        FROM series 
+            JOIN reviews 
+                ON series.id = reviews.series_id
+            JOIN reviewers 
+                ON reviews.reviewer_id = reviewers.id
+        ORDER BY series.id ASC;
+
+
+65. 

@@ -156,5 +156,3 @@ FROM books;
             ELSE CONCAT(COUNT(*), " books")
         END AS "Total Books"
     FROM books GROUP BY author_lname, author_fname;
-    
-    
