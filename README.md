@@ -605,4 +605,12 @@ Specifier	Description
         ORDER BY series.id ASC;
 
 
-65. 
+65. HAVING <--- Acts like WHERE; takes our grouped results and allows us to filter by a clause.
+
+        SELECT likes.user_id AS "USER ID", 
+               username AS "USERNAME", 
+               COUNT(*) AS "TOTAL_LIKES" 
+        FROM likes 
+            JOIN users ON likes.user_id = users.id 
+        GROUP BY users.id
+        HAVING TOTAL_LIKES = (SELECT COUNT(*) FROM photos);    <--- Note that WHERE does not work here.

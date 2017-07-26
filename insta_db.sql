@@ -108,3 +108,34 @@ CREATE TABLE photo_tags (
         SELECT ROUND(
                     (SELECT COUNT(*) FROM photos) / (SELECT COUNT(*) FROM users)
                     , 2) AS "Average Photos Per User"; 
+                    
+                    
+-- 6. What are the 5 most commonly used hashtags?
+
+        SELECT tags.tag_name AS "TAGS", 
+               COUNT(*) AS "TOTAL"
+        FROM photo_tags 
+            LEFT JOIN tags ON tags.id = photo_tags.tag_id
+        GROUP BY tags.id
+        ORDER BY TOTAL DESC LIMIT 5;
+        
+        
+-- 7. Find users who have liked every single photo on the site.
+
+        SELECT likes.user_id AS "USER ID", 
+               username AS "USERNAME", 
+               COUNT(*) AS "TOTAL_LIKES" 
+        FROM likes 
+            JOIN users ON likes.user_id = users.id 
+        GROUP BY users.id 
+        ORDER BY TOTAL_LIKES DESC;
+        
+        -- OR
+        
+        SELECT likes.user_id AS "USER ID", 
+               username AS "USERNAME", 
+               COUNT(*) AS "TOTAL_LIKES" 
+        FROM likes 
+            JOIN users ON likes.user_id = users.id 
+        GROUP BY users.id
+        HAVING TOTAL_LIKES = (SELECT COUNT(*) FROM photos);
