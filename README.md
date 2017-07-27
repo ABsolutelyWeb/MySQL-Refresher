@@ -616,3 +616,6 @@ TABLE FOR FORMATTING DATE:
             JOIN users ON likes.user_id = users.id 
         GROUP BY users.id
         HAVING TOTAL_LIKES = (SELECT COUNT(*) FROM photos);    <--- Note that WHERE does not work here.
+        
+        
+        NOTE: HAVING is for GROUP BY and must come after GROUP BY whereas WHERE must come before GROUP BY.
