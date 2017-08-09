@@ -619,6 +619,7 @@ TABLE FOR FORMATTING DATE:
         
         
         NOTE: HAVING is for GROUP BY and must come after GROUP BY whereas WHERE must come before GROUP BY.
+	NOTE2: We CANNOT use WHERE for grouping / aggregate functions. HAVING is for aggregate functions.
 		
 		
 66. UNION
