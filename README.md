@@ -619,3 +619,52 @@ TABLE FOR FORMATTING DATE:
         
         
         NOTE: HAVING is for GROUP BY and must come after GROUP BY whereas WHERE must come before GROUP BY.
+	NOTE2: We CANNOT use WHERE for grouping / aggregate functions. HAVING is for aggregate functions.
+		
+		
+66. UNION
+
+		Combines result sets of two or more SELECT statements into a single result.
+		
+			e.g.
+			
+			SELECT column1, column2
+			FROM table1
+			UNION
+			SELECT column1, column2
+			FROM table2;
+			
+			TWO RULES:
+			
+				1. Both queries must yield the same number of columns.
+				2. The corresponding columns have to be of the same / compatible data types.
+				
+			ADVANTAGES:
+			
+				+ Removes ALL duplicate rows unless UNION ALL is used.
+				+ Rows in first query may be placed before, after, or between the rows in result of second query.
+				+ Often used to combine data from similar tables that are not perfectly normalized AKA two tables
+				  with the exact same type of information, but not neccessarily the same data.
+				+ Doesn't need any keys like joins do. You can pick whatever tables you want given that they
+				  conform to UNION rules of operation.
+
+
+67. EXTRACT  <-- Useful query function for getting key information from dates.
+
+			SELECT EXTRACT(day from payment_date)
+			FROM payment;
+			
+				The extract function about will return an int.
+				SQL documentations will reveal more ways to use extract.
+				
+				
+68. SELF JOIN  <-- Joining a table to itself. Typically to find matches within a table.
+
+			SELECT t1.employee_name
+			FROM employee AS t1, employee AS t2
+			WHERE t1.employee_location = t2.employee_location AND t2.employee_name="James";
+			
+			OR
+			
+			SELECT t1.employee_name
+			FROM employee AS t1 JOIN employee AS t2 ON t1.first_name = t2.last_name;
