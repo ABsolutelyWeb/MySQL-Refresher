@@ -12,7 +12,7 @@ BASIC COMMANDS:
 
 3. To choose the database to use:
 
-            USE <table_name>;
+            USE <database_name>;
             
             
 4. To know what database we are using:
